@@ -46,13 +46,18 @@ def get_tracks_from_playlist(playlist: dict, access_token: str):
     return data["items"]
 
 
-def parse_country_codes_from_track(tracks: list[dict]) -> list[str]:
+def parse_country_codes_from_track(tracks: list[dict], show: bool = False) -> list[str]:
     id_list = []
     for item in tracks:
         track = item["track"]
+        name = track["name"]
         if "external_ids" not in track.keys():
             continue
         if "isrc" not in track["external_ids"].keys():
             continue
-        id_list.append(track["external_ids"]["isrc"][0:2])
+        country_code = track["external_ids"]["isrc"][0:2]
+        id_list.append(country_code)
+        if show:
+            print(name + "\t" + country_code)
+
     return id_list
